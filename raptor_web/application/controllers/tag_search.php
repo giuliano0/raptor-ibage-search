@@ -5,6 +5,7 @@ class Tag_search extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('tag_search_model');
+		$this->load->helper('url');
 	}
 
 	public function index()
@@ -12,9 +13,7 @@ class Tag_search extends CI_Controller {
 
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		
-		$data['title'] = 'Create a news item';
-		
+				
 		$this->form_validation->set_rules('tags', 'Tags', 'required');
 
 		if ($this->form_validation->run() === FALSE) {
@@ -24,6 +23,9 @@ class Tag_search extends CI_Controller {
 			$post = $this->input->post();
 
 			$data['images'] = $this->tag_search_model->get_images_by_tag($post['tags']);
+			$data['tags'] = $post['tags'];
+
+
 
 			$this->load->view('tag_search/index',$data);
 		}

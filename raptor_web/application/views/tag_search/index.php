@@ -75,7 +75,7 @@
 		<?php echo form_open('tag_search/index') ?>
 
 			<p align="center">
-			<label for="tags">Digite a tag que deseja buscar:</label> <br/>
+			<label for="tags">Digite a(s) tag(s) que deseja buscar separadas por espaço:</label> <br/>
 			<input type="input" name="tags" /><br />
 
 			<input type="submit" name="submit" value="Buscar" /> 
@@ -86,8 +86,8 @@
 
 	<?php if (isset($images)) { ?>
 		<?php foreach ($images as $images_item): ?>
-		    <h2><?php echo $images_item['pk_word'] ?></h2>
 		    <div id="main">
+		    	<img src='<?php echo base_url('assets/images/part1/part1/IMG'.$images_item['fk_id'].'.jpg'); ?>' />
 		        <?php echo $images_item['fk_image_id'] ?>
 		    </div>	    
 		<?php endforeach ?>
