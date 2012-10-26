@@ -86,9 +86,9 @@
 
 	<?php if (isset($images)) { ?>
 		<?php foreach ($images as $images_item): ?>
-		    <div id="main">
-		    	<img src='<?php echo base_url('assets/images/part1/part1/IMG'.$images_item['fk_id'].'.jpg'); ?>' />
-		        <?php echo $images_item['fk_image_id'] ?>
+		    <div class="main">
+		    	<img src='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>' />
+		        <?php //echo $images_item['fk_image_id'] ?>
 		    </div>	    
 		<?php endforeach ?>
 	<?php } ?>
