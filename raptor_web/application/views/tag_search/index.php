@@ -10,11 +10,17 @@
 	::moz-selection{ background-color: #E13300; color: white; }
 	::webkit-selection{ background-color: #E13300; color: white; }
 
+	html{
+		width: 90%;
+		margin: 0 auto;
+	}
+
 	body {
 		background-color: #fff;
-		margin: 40px;
+		margin: 40px auto;
 		font: 13px/20px normal Helvetica, Arial, sans-serif;
 		color: #4F5155;
+		width: 100%;
 	}
 
 	a {
@@ -58,9 +64,15 @@
 	}
 	
 	#container{
-		margin: 10px;
+		margin: 10px auto;
 		border: 1px solid #D0D0D0;
 		-webkit-box-shadow: 0 0 8px #D0D0D0;
+		width: 100%;
+	}
+
+	div.ibages{
+		width: 90%;
+		margin: 0 auto;
 	}
 	</style>
 </head>
@@ -85,12 +97,13 @@
 	</div>
 
 	<?php if (isset($images)) { ?>
+		<div class="ibages">
 		<?php foreach ($images as $images_item): ?>
-		    <div class="main">
-		    	<img src='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>' />
-		        <?php //echo $images_item['fk_image_id'] ?>
-		    </div>	    
+		    <!--<div class="main">-->
+		    	<img class="thumb" src='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>'  height="200"/>
+		    <!--</div>-->	    
 		<?php endforeach ?>
+		<div>
 	<?php } ?>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
