@@ -68,11 +68,22 @@
 		border: 1px solid #D0D0D0;
 		-webkit-box-shadow: 0 0 8px #D0D0D0;
 		width: 100%;
+		float:left;
 	}
 
 	div.ibages{
 		width: 90%;
 		margin: 0 auto;
+	}
+
+	div.divthumb{
+		margin: 25px;
+		float: left;
+	}
+
+	div.divfooter{
+		float:left;
+		width: 100%;
 	}
 	</style>
 </head>
@@ -99,14 +110,18 @@
 	<?php if (isset($images)) { ?>
 		<div class="ibages">
 		<?php foreach ($images as $images_item): ?>
-		    <!--<div class="main">-->
-		    	<img class="thumb" src='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>'  height="200"/>
-		    <!--</div>-->	    
+		    <div class="divthumb">
+		    	<a target="_blank" href='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>'>
+		    	<img class="thumb" src='<?php echo base_url('assets/images/part1/part1/'.$images_item['name'].''); ?>'  height="150"/>
+		    	</a>
+		    </div>    
 		<?php endforeach ?>
-		<div>
+		</div>
 	<?php } ?>
 
+	<div class="divfooter">
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds</p>
+	</div
 </div>
 
 
