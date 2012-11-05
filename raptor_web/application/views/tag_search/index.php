@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
+	
 	<meta charset="utf-8">
 	<title>Welcome to Raptor Ibage Search!</title>
 
@@ -89,21 +92,53 @@
 </head>
 <body>
 
+ 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+	
+	<script type="text/javascript">
+
+	$(document).ready(function() {
+		  formChange(1);
+		});
+		
+   function formChange(newOption) {
+
+	   htmlStr = null;
+		if (newOption !== 2){
+			htmlStr ='<p align="center">'+
+				'<label for="tags">Digite a(s) tag(s) que deseja buscar separadas por espaço:</label> <br/>'+
+				'<input type="input" name="tags" /><br />'+
+				'Busca por : &nbsp;&nbsp;'+
+				'<input type="radio" name="type" value="tags" checked="checked" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;'+
+				'<input type="radio" name="type" value="image" onchange="formChange(2)"/> Imagem <br/>'+
+				'<input type="submit" name="submit" value="Buscar por Tag" />'+
+				'</p>';
+		}
+		else{
+			htmlStr ='<p align="center">'+
+			'<label for="tags">Submeta a imagem pela qual deseja fazer uma busca por similaridade:</label> <br/>'+
+			'<input type="file" name="image" /><br />'+
+			'Busca por : &nbsp;&nbsp;'+
+			'<input type="radio" name="type" value="tags" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;'+
+			'<input type="radio" name="type" value="image" checked="checked" onchange="formChange(2)"/> Imagem <br/>'+
+			'<input type="submit" name="submit" value="Buscar por Imagem" />'+
+			'</p>';
+		}
+
+	    $("#search_form").html(htmlStr);
+   }
+	</script>
+
 <div id="container">
 	<h1>Welcome to Raptor Ibage Search!</h1>
 
 	<div id="body">
 		<?php echo validation_errors(); ?>
 
-		<?php echo form_open('tag_search/index') ?>
+		<?php echo form_open_multipart('tag_search/index') ?>
 
-			<p align="center">
-			<label for="tags">Digite a(s) tag(s) que deseja buscar separadas por espaço:</label> <br/>
-			<input type="input" name="tags" /><br />
+			<div id="search_form">
 
-			<input type="submit" name="submit" value="Buscar" /> 
-			</p>
-
+			</div>
 		</form>
 	</div>
 
