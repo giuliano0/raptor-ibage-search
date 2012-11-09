@@ -16,23 +16,23 @@ class Image_upload_model extends CI_Model {
 //		system('python C:\wamp\www\raptor-ibage-search\descriptor\desc-proj-norm\desc-proj-norm\projeta.py '.$vetor.' C:\wamp\www\raptor-ibage-search\descriptor\desc-proj-norm\desc-proj-norm\dicionario-2000.pal vetorSaida.hist' );
 //		system('python C:\wamp\www\raptor-ibage-search\descriptor\desc-proj-norm\desc-proj-norm\normalizar.py '.$vetorSaida.' VetorSaidaTF.nor');
 		
-		//read NOR file to retrieve data
+		//TODO: read NOR file created to retrieve data
 		$filename = "C:/wamp/www/raptor-ibage-search/NOR/IMG000002.nor";
 		$handle = fopen($filename, "r");
 		$descriptor = fread($handle, filesize($filename));
 		fclose($handle);
 		
-		//debug variable -- DELETE
+		//debug variable --DELETE
 		$resultado['NOR'] = $descriptor;
 		
 		//TODO:calculate md5
 		$md5 = 'xs2x3x45dc6avsdbsydtyab78v90cwc';
 		
 		//NEW STEP
-		//TODO: calculate cluster 
+		//TODO: calculate cluster --DONE?
 		$fk_cluster_id = $this->calculate_cluster($descriptor);
 		$resultado['clusters'] = $fk_cluster_id;
-		//REMOVE when it works
+		//REMOVE \/ when it works
 		$fk_cluster_id = 1;
 		
 		//insert image reference into table Images
@@ -41,13 +41,13 @@ class Image_upload_model extends CI_Model {
 		
 		$this->db->query($query);
 		
-		//debug variable DELETE
+		//debug variable --DELETE
 		$resultado['query1'] = $query;
 		
 		//the id of the inserted image
 		$image_id = mysql_insert_id();
 		
-		//debug variable DELETE
+		//debug variable --DELETE
 		$resultado['image_id'] = $image_id;
 		
 		//build tag insertion query
@@ -62,7 +62,7 @@ class Image_upload_model extends CI_Model {
 		//run tag insertion query
 		mysql_query($query);
 		
-		//debug variable DELETE
+		//debug variable --DELETE
 		$resultado['query2'] = $query;
 		
 		return $resultado;
@@ -82,7 +82,7 @@ class Image_upload_model extends CI_Model {
 		$menorDistancia = 9999999999;
 		
 		foreach ($clusters as $key => $data){
-// 			$data = array contendo um campo centroid e um campo clusterId
+// 			$data = array contendo um campo centroid e um campo clusterID
 			$arrayCandidato = $this->calculateFloatVector($data['centroid']);
 			$distancia = $this->euclidean_canonical_very_dumb($arrayCandidato, $insertedVector);
 			
@@ -97,6 +97,7 @@ class Image_upload_model extends CI_Model {
 	
 	private function calculateFloatVector($NOR){
 		
+			$NOR = str_replace(",", ".", $NOR);
 			$array = str_split($NOR, 16);
 			return $array;
 	}
