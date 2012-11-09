@@ -14,10 +14,17 @@
 	</ul>
 
 	<ul>
+		<pre> 
+		<?php print_r($resultado);?>
+		</pre>
+		
+		<!-- 
 		<?php foreach ($resultado as $item => $value):?>
 		<li><?php echo $item;?>: <?php echo $value;?>
 		</li>
 		<?php endforeach; ?>
+		 -->
+		
 	</ul>
 	
 	
