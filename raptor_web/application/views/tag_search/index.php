@@ -95,36 +95,21 @@
  	<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 	
 	<script type="text/javascript">
-
-	$(document).ready(function() {
-		  formChange(1);
-		});
 		
    function formChange(newOption) {
 
 	   htmlStr = null;
 		if (newOption !== 2){
-			htmlStr ='<p align="center">'+
-				'<label for="tags">Digite a(s) tag(s) que deseja buscar separadas por espaço:</label> <br/>'+
-				'<input type="input" name="tags" /><br />'+
-				'Busca por : &nbsp;&nbsp;'+
-				'<input type="radio" name="type" value="tags" checked="checked" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;'+
-				'<input type="radio" name="type" value="image" onchange="formChange(2)"/> Imagem <br/>'+
-				'<input type="submit" name="submit" value="Buscar por Tag" />'+
-				'</p>';
+			$("#s1tag").attr("checked", "checked");
+			$("#search_form_images").hide();
+			$("#search_form_tags").show();
 		}
 		else{
-			htmlStr ='<p align="center">'+
-			'<label for="tags">Submeta a imagem pela qual deseja fazer uma busca por similaridade:</label> <br/>'+
-			'<input type="file" name="image" /><br />'+
-			'Busca por : &nbsp;&nbsp;'+
-			'<input type="radio" name="type" value="tags" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;'+
-			'<input type="radio" name="type" value="image" checked="checked" onchange="formChange(2)"/> Imagem <br/>'+
-			'<input type="submit" name="submit" value="Buscar por Imagem" />'+
-			'</p>';
+			$("#s2image").attr("checked", "checked");
+			$("#search_form_tags").hide();
+			$("#search_form_images").show();
 		}
-
-	    $("#search_form").html(htmlStr);
+	    
    }
 	</script>
 
@@ -132,14 +117,51 @@
 	<h1>Welcome to Raptor Ibage Search!</h1>
 
 	<div id="body">
+		
 		<?php echo validation_errors(); ?>
 
-		<?php echo form_open_multipart('tag_search/index') ?>
-
-			<div id="search_form">
-
+		<?php echo anchor('', 'Busca');?>
+		&nbsp;&nbsp;
+		<?php echo anchor('upload', 'Inserir Imagem');?>
+		
+			<div id="search_form_tags" >
+				<?php echo form_open('tag_search/index') ?>
+				<p align="center">
+				<label for="tags">Digite a(s) tag(s) que deseja buscar separadas por espaço:</label> <br/>
+				<input type="text" name="tags" /><br />
+				Busca por : &nbsp;&nbsp;
+				<input id="s1tag" type="radio" name="type" value="tags" checked="checked" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;
+				<input id="s1image" type="radio" name="type" value="image" onchange="formChange(2)"/> Imagem <br/>
+				<input type="submit" name="submit" value="Buscar por Tag" />
+				</p>
+				</form>
 			</div>
-		</form>
+			<div id="search_form_images" style="display:none" >
+				<?php echo form_open_multipart('image_search/index') ?>
+				<p align="center">
+				<label for="tags">Submeta a imagem pela qual deseja fazer uma busca por similaridade:</label> <br/>
+				<input type="file" name="image" /><br />
+				Busca por : &nbsp;&nbsp;
+				<input id="s2tag" type="radio" name="type" value="tags" onchange="formChange(1)" /> Tags &nbsp;&nbsp;&nbsp;&nbsp;
+				<input id="s2image" type="radio" name="type" value="image" checked="checked" onchange="formChange(2)"/> Imagem <br/>
+				<input type="submit" name="submit" value="Buscar por Imagem" />
+				</p>
+				</form>
+			</div>
+<!-- 			<br/><br/><br/><br/> -->
+<!-- 			<div id="upload_image" > -->
+				<?php echo form_open_multipart('upload/do_upload') ?>
+<!-- 				<p align="center"> -->
+<!-- 				<label for="tags">Submeta uma imagem nova:</label> <br/> -->
+<!-- 				<input type="file" name="userfile" /><br /> -->
+<!-- 				Nome da Imagem: <input type="text" name="imageName" /><br /> -->
+<!-- 				Descricao: <input type="text" name="description" /><br /> -->
+<!-- 				Album URL: <input type="text" name="albumUrl" /><br /> -->
+<!-- 				Image URL: <input type="text" name="imageUrl" /><br /> -->
+<!-- 				<input type="submit" name="submit" value="Enviar" /> -->
+<!-- 				</p> -->
+<!-- 				</form> -->
+<!-- 			</div> -->
 	</div>
 
 	<?php if (isset($images)) { ?>
