@@ -16,7 +16,9 @@ class Upload extends CI_Controller {
 
 	function do_upload()
 	{
-		$config['upload_path'] = './uploads/';
+
+		$config['upload_path'] = 'assets/images/upload/';
+		#$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '2000';
 		$config['max_width']  = '1024';
@@ -32,9 +34,11 @@ class Upload extends CI_Controller {
 		}
 		else
 		{
+
 			$data = array('upload_data' => $this->upload->data());
 			$post = $this->input->post();
-			$data['resultado'] = $this->image_upload_model->manage_image($post['imageName'], $post['description'], $post['albumUrl'], $post['imageUrl'], $post['imageTags']);
+			print_r($post);
+			$data['resultado'] = $this->image_upload_model->manage_image($post['imageName'], $post['description'], $post['albumUrl'], $post['imageUrl']);
 			
 			$this->load->view('upload_success', $data);
 		}
