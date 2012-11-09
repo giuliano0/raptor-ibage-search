@@ -7,8 +7,14 @@ import string
 	
 
 def projeta(vetorIN,dicio,vetorOUT):
-	comando = "QUANTIZA_HISTOGRAMAS.exe " + vetorIN + " " + dicio + " " + vetorOUT + ".hist " + str(+1)
-	os.system(comando)
+	dir = os.getcwd()
+	dirscripts = dir +"\\assets\\images\\upload\\"
+	comando = dirscripts+"QUANTIZA_HISTOGRAMAS.exe " + vetorIN + " " + dicio + " " + vetorOUT + ".hist " + str(+1)
+	try:
+		os.system(comando)	
+	except Exception as e:
+		print e
+	
 		
 
 #################################################################

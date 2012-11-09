@@ -33,10 +33,18 @@ class Image_search extends CI_Controller {
 			{
 				$data = array('upload_data' => $this->upload->data());
 
+				$pythonpath = "c:\Python27\python.exe";
+
 				#$command = 'c:\Python27\python.exe  ..\descriptor\desc-proj-norm\desc-proj-norm\caracterizar.py '.$data['upload_data']['full_path'].' vetor  ';
-				$command = 'c:\Python27\python.exe assets\images\upload\caracterizar.py '.$data['upload_data']['full_path'].' vetor.key  ';
+				$command = $pythonpath.' assets\images\upload\caracterizar.py '.$data['upload_data']['full_path'].' vetor.key  ';
 				system($command);
-				//print $command;
+
+
+				$command2 = $pythonpath.' assets\images\upload\projetar.py assets\images\upload\vetor.key assets\images\upload\dicionario-2000.pal  assets\images\upload\vetorSaida';
+				system($command2);
+
+				$command3 = $pythonpath.' assets\images\upload\normalizar.py assets\images\upload\vetorSaida.hist assets\images\upload\VetorSaidaTF';
+				system($command3);
 
 				//call scripts python
 				/*

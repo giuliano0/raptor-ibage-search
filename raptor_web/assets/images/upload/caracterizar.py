@@ -62,7 +62,7 @@ def organizeFileSurfToDescriptor(nfile,dirscripts):    # changes the .key format
    
 
 def caracterizarImagem(dirImage,vetor):
-   print(dirImage)
+   #print(dirImage)
    try:
       dir = os.getcwd()
       #dirImage = dir +"\\assets\\images\\upload\\"+dirImage

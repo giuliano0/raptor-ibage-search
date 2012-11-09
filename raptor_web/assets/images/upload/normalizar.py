@@ -27,4 +27,7 @@ def normalizar(vetorIN, vetorOUT):
 
 vetorIN=sys.argv[1]
 vetorOUT=sys.argv[2]
-normalizar(vetorIN,vetorOUT)
+try:
+	normalizar(vetorIN,vetorOUT)
+except Exception as inst:
+	print inst
