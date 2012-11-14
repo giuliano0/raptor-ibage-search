@@ -14,10 +14,12 @@
 	</ul>
 
 	<ul>
-		<?php foreach ($resultado as $item => $value):?>
-		<li><?php echo $item;?>: <?php echo $value;?>
-		</li>
-		<?php endforeach; ?>
+	
+		<pre> 
+		<?php //TODO: remove and redirect to start page instead of this
+			print_r($resultado);?>
+		</pre>
+		
 	</ul>
 	
 	

@@ -113,6 +113,7 @@ width: 100%;
 				Descricao: <input type="text" name="description" /><br />
 				Album URL: <input type="text" name="albumUrl" /><br />
 				Image URL: <input type="text" name="imageUrl" /><br />
+				Tags: <input type="text" name="imageTags" /><br />
 				<input type="submit" name="submit" value="Enviar" />
 				</p>
 				</form>
