@@ -40,12 +40,12 @@ class Image_search extends CI_Controller {
 
 				if ($query->num_rows() > 0) {
 					$data['images'] = $query->result_array();
+					print_r($data);
 					$this->load->view('tag_search/index',$data);
 				}
 
 				//busca por similaridade
 				else{
-
 					$pythonpath = "c:\Python27\python.exe";
 
 					#$command = 'c:\Python27\python.exe  ..\descriptor\desc-proj-norm\desc-proj-norm\caracterizar.py '.$data['upload_data']['full_path'].' vetor  ';
@@ -63,6 +63,41 @@ class Image_search extends CI_Controller {
 					$descriptor = fread($handle, filesize($filename));
 					fclose($handle);
 
+					$sql = "SELECT i.descriptor,i.name FROM images as i";
+					$query = $this->db->query($sql);
+
+					$arraydesc = explode(" ", $descriptor);
+
+					$distances = [];
+					foreach ($query->result() as $row) {
+					   $insertedVector = $this->calculateFloatVector($row->descriptor);
+
+					   $d = $this->euclidean_smart($insertedVector, $arraydesc);
+
+					   $distances[$row->name] = $d;
+
+					   //print_r ($d);
+					   //print_r("\n");
+					}
+
+					asort($distances);
+
+					$distances = array_slice($distances, 0, 49);
+
+					$data['images'] = array();
+					$image = array();
+					foreach($distances as $key => $value) {
+						//print_r ($key);
+					    //print_r("\n");
+
+					    $image['name'] = $key;
+
+						array_push($data['images'],$image);
+					}
+
+					//print_r($data);
+
+					$this->load->view('tag_search/index',$data);
 						
 
 				}
@@ -98,5 +133,41 @@ class Image_search extends CI_Controller {
 			*/
 	}
 
+	private function calculateFloatVector($NOR){
+		
+			$NOR = str_replace(",", ".", $NOR);
+			$array = str_split($NOR, 16);
+			return $array;
+	}
+
+	function euclidean_smart($u, $v)
+	{
+	   $inner_prod = 0;
+	   
+	   // Calcula <u,v>
+	   if ( ( sizeof($u)>1999 ) && ( sizeof($v)>1999 ) ) { 
+		   for ($i = 0; $i < 2000; $i++) {
+
+		      	$inner_prod += $u[$i] * $v[$i];
+		   }
+
+		   return 2 * (1 - $inner_prod);
+	   }
+
+	   else{
+	   		// DEBUG MODE
+	   		/*
+	   		print_r ("sizeof u: ".sizeof($u));
+	   		print_r("\n");
+	   		print_r ("sizeof v: ".sizeof($v));
+	   		print_r("\n");
+			*/
+
+	   		return 99999;
+	   }
+	   	   
+	}
 }
+
+
 ?>

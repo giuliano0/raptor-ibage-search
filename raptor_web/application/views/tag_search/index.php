@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-
-
-	
+<head>	
 	<meta charset="utf-8">
 	<title>Welcome to Raptor Ibage Search!</title>
 
