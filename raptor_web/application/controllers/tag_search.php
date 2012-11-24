@@ -25,6 +25,8 @@ class Tag_search extends CI_Controller {
 			$data['images'] = $this->tag_search_model->get_images_by_tag($post['tags']);
 			$data['tags'] = $post['tags'];
 
+			print_r($data['images']);
+
 
 
 			$this->load->view('tag_search/index',$data);
