@@ -63,6 +63,9 @@ class Image_search extends CI_Controller {
 					$descriptor = fread($handle, filesize($filename));
 					fclose($handle);
 
+					unlink($filename);
+					unlink($data['upload_data']['full_path']);
+
 					$sql = "SELECT i.descriptor,i.name FROM images as i";
 					$query = $this->db->query($sql);
 
