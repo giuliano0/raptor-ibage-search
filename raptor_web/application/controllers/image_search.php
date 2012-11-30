@@ -35,17 +35,64 @@ class Image_search extends CI_Controller {
 
 				//calcula md5 e retorna se tiver imagem igual
 				$md5 = md5_file($data['upload_data']['full_path']);
-				$sql = "SELECT i.name FROM images as i WHERE i.md5 ='".$md5."'";
+				$sql = "SELECT i.name, i.descriptor FROM images as i WHERE i.md5 ='".$md5."'";
 				$query = $this->db->query($sql);
 
-				if ($query->num_rows() > 0) {
-					$data['images'] = $query->result_array();
-					print_r($data);
-					$this->load->view('tag_search/index',$data);
-				}
+				$data['images'] = array();
 
-				//busca por similaridade
+				ini_set("memory_limit","300M");
+
+				if ($query->num_rows() > 0) {
+					$row = $query->row(); 
+					$descriptor = $row->descriptor;
+					$data['images'] = $query->result_array();
+				
+					$sql = "SELECT t.pk_word FROM images as i, tags as t WHERE t.fk_image_id = i.pk_id 
+							AND i.name IN ('".$data['images'][0]['name']."')";
+
+					$query = $this->db->query($sql);	
+
+					$tags = "";
+					foreach ($query->result() as $row) {
+						$tags .= "'".$row->pk_word."',";
+					}
+
+					$tags = substr($tags, 0, -1);
+					$sql = "SELECT i.descriptor,i.name, count(t.fk_image_id) as cnt FROM images as i, tags as t WHERE t.fk_image_id = i.pk_id 
+							AND t.pk_word IN (".$tags.") AND i.name <> '".$data['images'][0]['name']."' GROUP BY fk_image_id ORDER BY cnt DESC LIMIT 0, 50";
+					
+
+					$query = $this->db->query($sql);
+					$arraydesc = explode(" ", $descriptor);
+
+					$distances = [];
+					foreach ($query->result() as $row) {
+						$insertedVector = $this->calculateFloatVector($row->descriptor);
+
+						$d = $this->euclidean_smart($insertedVector, $arraydesc);
+
+						$distances[$row->name] = $d;
+
+					}
+
+					asort($distances);
+
+					$distances = array_slice($distances, 0, 49);
+
+					$image = array();
+					foreach($distances as $key => $value) {
+
+					    $image['name'] = $key;
+
+						array_push($data['images'],$image);
+					}
+
+					$this->load->view('tag_search/index',$data);
+
+				}
 				else{
+
+					//busca por similaridade
 					$pythonpath = "c:\Python27\python.exe";
 
 					#$command = 'c:\Python27\python.exe  ..\descriptor\desc-proj-norm\desc-proj-norm\caracterizar.py '.$data['upload_data']['full_path'].' vetor  ';
@@ -68,7 +115,6 @@ class Image_search extends CI_Controller {
 
 					$sql = "SELECT i.descriptor,i.name FROM images as i";
 					$query = $this->db->query($sql);
-
 					$arraydesc = explode(" ", $descriptor);
 
 					$distances = [];
@@ -79,19 +125,36 @@ class Image_search extends CI_Controller {
 
 					   $distances[$row->name] = $d;
 
-					   //print_r ($d);
-					   //print_r("\n");
 					}
 
 					asort($distances);
 
-					$distances = array_slice($distances, 0, 49);
+					$distances = array_slice($distances, 0, 5);
 
-					$data['images'] = array();
+					$nomes= "";
+					
+					foreach($distances as $key => $value) {
+						$nomes .= "'".$key."',";	
+					}
+					$nomes = substr($nomes, 0 ,-1);
+
+					$sql = "SELECT t.pk_word FROM tags as t, images as i WHERE t.fk_image_id = i.pk_id 
+							AND i.name IN (".$nomes.")";
+
+					$query = $this->db->query($sql);
+
+					$tags = "";
+					foreach ($query->result() as $row) {
+						$tags .= "'".$row->pk_word."',";
+					}
+					$tags = substr($tags, 0, -1);
+
+					$sql = "SELECT i.descriptor,i.name, count(t.fk_image_id) as cnt FROM images as i, tags as t WHERE t.fk_image_id = i.pk_id 
+							AND t.pk_word IN (".$tags.") GROUP BY fk_image_id ORDER BY cnt DESC LIMIT 0, 50";
+
+
 					$image = array();
 					foreach($distances as $key => $value) {
-						//print_r ($key);
-					    //print_r("\n");
 
 					    $image['name'] = $key;
 
@@ -101,12 +164,8 @@ class Image_search extends CI_Controller {
 					//print_r($data);
 
 					$this->load->view('tag_search/index',$data);
-						
-
-				}
-
 				
-
+				}
 				//$sql = "SELECT t.fk_image_id,t.fk_id,i.name FROM tags as t, images as i WHERE t.fk_image_id = i.pk_id AND i.md5 ='".$md5."'";
 				
 
